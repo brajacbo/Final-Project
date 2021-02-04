@@ -1,8 +1,25 @@
 ,Fecha y hora,Velocidad de viento,Rayos UV,Temperatura,Humedad relativa,Luz/oscuridad,Lluvia
-0,Sat Jan 23 22:29:57 2021,0,0,19.899999618530273,70.5,iluminado,Seco
-1,Sat Jan 23 22:30:59 2021,0,0,19.799999237060547,70.30000305175781,Oscuro,Seco
-2,Sat Jan 23 22:32:06 2021,0,0,19.399999618530273,70.0,Oscuro,Seco
-3,Sat Jan 23 22:33:14 2021,0,0,19.600000381469727,70.4000015258789,Oscuro,Seco
-4,Sat Jan 23 22:34:46 2021,0,0,19.899999618530273,70.5999984741211,Oscuro,Seco
-5,Sat Jan 23 22:35:49 2021,0,0,19.899999618530273,70.69999694824219,iluminado,Seco
-6,Sat Jan 23 22:36:52 2021,0,0,19.799999237060547,70.5999984741211,iluminado,Seco
+0,Tue Feb  2 21:27:51 2021, 78.70,0, 20.00, 43.20,iluminado,Seco
+1,Tue Feb  2 21:28:55 2021, 0.00,0, 19.90, 43.00,iluminado,Seco
+2,Tue Feb  2 21:29:57 2021, 0.00,0, 19.90, 42.60,iluminado,Seco
+3,Tue Feb  2 21:30:59 2021, 0.00,0, 19.90, 43.40,Oscuro,Seco
+4,Tue Feb  2 21:32:01 2021, 0.00,0, 20.00, 43.30,Oscuro,Seco
+5,Tue Feb  2 21:33:16 2021, 0.00,0, 19.90, 43.40,Oscuro,Seco
+6,Tue Feb  2 21:34:18 2021, 0.00,0, 19.90, 43.30,Oscuro,Seco
+7,Tue Feb  2 21:35:22 2021, 0.00,0, 19.90, 43.30,Oscuro,Seco
+8,Tue Feb  2 21:36:34 2021, 0.00,0, 19.80, 42.80,Oscuro,Seco
+9,Tue Feb  2 21:37:37 2021, 0.00,0, 19.80, 42.60,Oscuro,Seco
+10,Tue Feb  2 21:38:39 2021, 0.00,0, 19.80, 42.50,Oscuro,Seco
+11,Tue Feb  2 21:39:42 2021, 0.00,0, 19.70, 42.50,Oscuro,Seco
+12,Tue Feb  2 21:40:44 2021, 0.00,0, 19.80, 42.60,Oscuro,Seco
+13,Tue Feb  2 21:41:47 2021, 0.00,0, 19.70, 42.80,Oscuro,Seco
+14,Tue Feb  2 21:42:50 2021, 0.00,0, 19.70, 43.20,iluminado,Seco
+15,Tue Feb  2 21:43:54 2021, 0.00,0, 19.70, 43.20,Oscuro,Seco
+16,Tue Feb  2 21:45:09 2021, 0.00,0, 19.80, 43.20,Oscuro,Seco
+17,Tue Feb  2 21:46:10 2021, 0.00,0, 19.80, 43.20,Oscuro,Seco
+18,Tue Feb  2 21:47:23 2021, 0.00,0, 19.70, 42.90,Oscuro,Seco
+19,Tue Feb  2 21:48:24 2021, 0.00,0, 19.70, 42.70,Oscuro,Seco
+20,Tue Feb  2 21:49:26 2021, 0.00,0, 19.70, 42.60,Oscuro,Seco
+21,Tue Feb  2 21:50:28 2021, 0.00,0, 19.70, 42.50,Oscuro,Seco
+22,Tue Feb  2 21:51:35 2021, 0.00,0, 19.60, 42.80,iluminado,Seco
+23,Tue Feb  2 21:52:37 2021, 0.00,0, 19.60, 42.90,Oscuro,Seco

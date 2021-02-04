@@ -32,6 +32,12 @@ humedad_d = []
 LDR_d = []
 lluvia_d = []
 
+## Inicializacion de variables:
+
+humedad, temperatura = Adafruit_DHT.read_retry(sensor, TH)
+temperatura_old = temperatura
+humedad_old = humedad
+
 ## Toma ciclica de datos:
 
 while True:
@@ -42,10 +48,13 @@ while True:
     count = 0    ## Inicialización de variables
     rps_sum = 0
     rpm_sum = 0
+    rps_prom = 0
+    rpm_prom = 0
     anterior_input = False
-    timeWind = 20
+    timeWind = 50
     timeOld = time.monotonic()
     timeStart = timeOld
+    pulsos_vuelta = 1    ## Depende de la cantidad de imanes
 
     while True:
         
@@ -59,7 +68,7 @@ while True:
             Dtime = timeNew - timeOld
             ##print("Diferencia entre tiempos de pulso: ",Dtime)
             
-            rps = 1/(1*Dtime)
+            rps = 1/(pulsos_vuelta*Dtime)
             rpm = rps*60
             ##print('RPS: ', rps)
             ##print('RPM: ', rpm)
@@ -67,7 +76,9 @@ while True:
             rps_sum += rps
             rpm_sum += rpm
             
-            timeOld = timeNew
+            timeOld = timeNew + 0.04
+
+            time.sleep(0.04)  ## tiempo para antirrebote
         
         anterior_input = inputValue   ## Guardar valor de entrada anterior anterior
         
@@ -77,17 +88,20 @@ while True:
             if count > 2:
                 rps_prom = rps_sum/count
                 rpm_prom = rpm_sum/count
+                if rpm_prom > 10000:
+                    rpm_prom = 0
             else:
                 rps_prom = 0
                 rpm_prom = 0
             
-            vel_viento_d.append(rpm_prom)  ## Agrega dato a lista de la variable
+            vel_viento_d.append('{: 0.2f}'. format (rpm_prom))  ## Agrega dato a lista de la variable
             
             ##print(timeBucle)
             ##print('RPS promedio: ', rps_prom)
             ##print('RPM promedio: ', rpm_prom)
             
             break
+        
     
     ## Lectura rayos UV:
     with busio.I2C(board.SCL, board.SDA) as i2c:
@@ -99,17 +113,23 @@ while True:
         UV_d.append(uv_raw)  ## Agrega dato a lista de la variable
     
     ## Lectura temperatura y humedad relativa:
+
     humedad, temperatura = Adafruit_DHT.read_retry(sensor, TH)
-    if humedad is not None and temperatura is not None and temperatura < 38 and temperatura > -5:
-        temperatura = temperatura
-        humedad = humedad
+    
+    if humedad is not None and temperatura is not None and abs(temperatura_old - temperatura) < 2: ## Ajuste de error de datos aleatorios
+        print('bien T')
+        temperatura_old = temperatura
+        humedad_old = humedad
     
     else:
+        print('mal T')
         ##print('Fallo la lectura del sensor AM2301 - Intentar de nuevo')
         humedad, temperatura = Adafruit_DHT.read_retry(sensor, TH)
+        temperatura_old = temperatura
+        humedad_old = humedad
     
-    temperatura_d.append(temperatura)  ## Agrega dato a lista de la variable
-    humedad_d.append(humedad)          ## Agrega dato a lista de la variable
+    temperatura_d.append('{: 0.2f}'. format (temperatura))  ## Agrega dato a lista de la variable
+    humedad_d.append('{: 0.2f}'. format (humedad))          ## Agrega dato a lista de la variable
     
     ## Lectura LDR:
     lectura = GPIO.input(LDR)
@@ -155,8 +175,7 @@ while True:
                                        'Lluvia'])
     df.to_csv('DATA.csv')
     
-    
-    print(f'Indice UV={uv_raw}, Nivel UV ={risk_level} | Velocidad de viento= {rpm_prom} | Temperatura={temperatura:.2f}°C | Humedad={humedad:.2f}% | {info_ldr} | {info_rain}')
-    enviar = requests.get(f'https://api.thingspeak.com/update?api_key=VEX7N395HLX3Z5RE&field1={temperatura}&field2={humedad}&field3={uv_raw}&field4={rpm_prom}&field5={ldr}&field6={rain}')
+    print(f'Indice UV={uv_raw}, Nivel UV ={risk_level} | Velocidad de viento= {rpm_prom:.2f} | Temperatura={temperatura:.2f}°C | Humedad={humedad:.2f}% | {info_ldr} | {info_rain}')
+    enviar = requests.get(f'https://api.thingspeak.com/update?api_key=VEX7N395HLX3Z5RE&field1={temperatura:.2f}&field2={humedad:.2f}&field3={uv_raw}&field4={rpm_prom:.2f}&field5={ldr}&field6={rain}')
     ##print(df)
-    time.sleep(40)
+    time.sleep(10)
