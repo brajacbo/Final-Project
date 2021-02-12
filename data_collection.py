@@ -65,12 +65,15 @@ while True:
             print(count)
             timeNew = time.monotonic()# time.monotic()
             Dtime = timeNew - timeOld
-            ##print("Diferencia entre tiempos de pulso: ",Dtime)
+            #print("Diferencia entre tiempos de pulso: ",Dtime)
             
             rps = 1/(pulsos_vuelta*Dtime)
             rpm = rps*60
-            ##print('RPS: ', rps)
+            #print('RPS: ', rps)
             print('RPM: ', rpm)
+
+            if rpm > 1000:
+                rpm = 0
 
             rps_sum += rps
             rpm_sum += rpm
@@ -87,16 +90,14 @@ while True:
             if count > 2:
                 rps_prom = rps_sum/count
                 rpm_prom = rpm_sum/count
-                if rpm_prom > 1000:
-                    rpm_prom = 0
             else:
                 rps_prom = 0
                 rpm_prom = 0
             
             vel_viento_d.append('{: 0.2f}'. format (rpm_prom))  ## Agrega dato a lista de la variable
             
-            ##print(timeBucle)
-            ##print('RPS promedio: ', rps_prom)
+            #print(timeBucle)
+            #print('RPS promedio: ', rps_prom)
             print('RPM promedio: ', rpm_prom)
             
             break
@@ -116,13 +117,13 @@ while True:
     humedad, temperatura = Adafruit_DHT.read_retry(sensor, TH)
     
     if humedad is not None and temperatura is not None and abs(temperatura_old - temperatura) < 2: ## Ajuste de error de datos aleatorios
-        print('bien T')
+        #print('bien T')
         temperatura_old = temperatura
         humedad_old = humedad
     
     else:
-        print('mal T')
-        ##print('Fallo la lectura del sensor AM2301 - Intentar de nuevo')
+        #print('mal T')
+        #print('Fallo la lectura del sensor AM2301 - Intentar de nuevo')
         humedad, temperatura = Adafruit_DHT.read_retry(sensor, TH)
         temperatura_old = temperatura
         humedad_old = humedad
