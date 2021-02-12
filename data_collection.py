@@ -57,13 +57,12 @@ while True:
     pulsos_vuelta = 1    ## Depende de la cantidad de imanes
 
     while True:
-        
         inputValue = GPIO.input(WIND)
         
         if(inputValue == True and anterior_input == False): ## condición con antirebote
             
             count += 1
-            ##print(count)
+            print(count)
             timeNew = time.monotonic()# time.monotic()
             Dtime = timeNew - timeOld
             ##print("Diferencia entre tiempos de pulso: ",Dtime)
@@ -71,8 +70,8 @@ while True:
             rps = 1/(pulsos_vuelta*Dtime)
             rpm = rps*60
             ##print('RPS: ', rps)
-            ##print('RPM: ', rpm)
-            
+            print('RPM: ', rpm)
+
             rps_sum += rps
             rpm_sum += rpm
             
@@ -98,7 +97,7 @@ while True:
             
             ##print(timeBucle)
             ##print('RPS promedio: ', rps_prom)
-            ##print('RPM promedio: ', rpm_prom)
+            print('RPM promedio: ', rpm_prom)
             
             break
         
