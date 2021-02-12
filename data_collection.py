@@ -22,6 +22,10 @@ GPIO.setup(LDR, GPIO.IN)
 GPIO.setup(RAIN, GPIO.IN)
 GPIO.setup(WIND,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
+## Lectura de dataframe:
+
+df_anterior = pd.read_csv('DATA_all.csv',skiprows=1,names = ['Fecha y hora','Velocidad de viento','Intensidad luz UV','Temperatura','Humedad relativa','Luz/oscuridad','Lluvia'])
+
 ## Listas vacias de los datos de las variables:
 
 hora_fecha_d = []
@@ -95,7 +99,8 @@ while True:
                 rpm_prom = 0
             
             vel_viento_d.append('{: 0.2f}'. format (rpm_prom))  ## Agrega dato a lista de la variable
-            
+            #vel_viento_d = ('{: 0.2f}'. format (rpm_prom))
+
             #print(timeBucle)
             #print('RPS promedio: ', rps_prom)
             print('RPM promedio: ', rpm_prom)
@@ -111,6 +116,7 @@ while True:
         risk_level = uv.get_index(uv_raw)
         
         UV_d.append(uv_raw)  ## Agrega dato a lista de la variable
+        #UV_d = uv_raw
     
     ## Lectura temperatura y humedad relativa:
 
@@ -130,6 +136,9 @@ while True:
     
     temperatura_d.append('{: 0.2f}'. format (temperatura))  ## Agrega dato a lista de la variable
     humedad_d.append('{: 0.2f}'. format (humedad))          ## Agrega dato a lista de la variable
+    #temperatura_d = ('{: 0.2f}'. format (temperatura))  ## Agrega dato a lista de la variable
+    #humedad_d = ('{: 0.2f}'. format (humedad))          ## Agrega dato a lista de la variable
+    
     
     ## Lectura LDR:
     lectura = GPIO.input(LDR)
@@ -141,6 +150,7 @@ while True:
         ldr = 1
     
     LDR_d.append(info_ldr)  ## Agrega dato a lista de la variable
+    #LDR_d = info_ldr
     
     ## Lectura Lluvia:
     lectura = GPIO.input(RAIN)
@@ -152,30 +162,31 @@ while True:
         rain = 1
     
     lluvia_d.append(info_rain)  ## Agrega dato a lista de la variable
+    #lluvia_d = info_rain
     
     ## Hora y fecha actual:
     localtime = time.asctime( time.localtime(time.time()) )
     
     hora_fecha_d.append(localtime) ## Agrega dato a lista de la variable
-    
+    #hora_fecha_d = localtime
+
     ##DataFrame:
-    data = {'Fecha y hora':hora_fecha_d,
-            'Velocidad de viento':vel_viento_d,
-            'Rayos UV':UV_d,
-            'Temperatura':temperatura_d,
-            'Humedad relativa':humedad_d,
-            'Luz/oscuridad':LDR_d,
-            'Lluvia':lluvia_d}
-    df = pd.DataFrame(data, columns = ['Fecha y hora',
-                                       'Velocidad de viento',
-                                       'Rayos UV',
-                                       'Temperatura',
-                                       'Humedad relativa',
-                                       'Luz/oscuridad',
-                                       'Lluvia'])
-    df.to_csv('DATA.csv')
+    new_data = {'Fecha y hora':hora_fecha_d,
+                'Velocidad de viento':vel_viento_d,
+                'Intensidad luz UV':UV_d,
+                'Temperatura':temperatura_d,
+                'Humedad relativa':humedad_d,
+                'Luz/oscuridad':LDR_d,
+                'Lluvia':lluvia_d}
+    data = pd.DataFrame(new_data, columns = ['Fecha y hora','Velocidad de viento','Intensidad luz UV','Temperatura','Humedad relativa','Luz/oscuridad','Lluvia'])
+    
+    data_all = pd.concat([df_anterior, data], sort=False)
+    #data_all = pd.concat([df_anterior, new_data], sort=True)
+    data_all.index = range(data_all.shape[0])
+    data_all.to_csv('DATA_all.csv')
     
     print(f'Indice UV={uv_raw}, Nivel UV ={risk_level} | Velocidad de viento= {rpm_prom:.2f} | Temperatura={temperatura:.2f}°C | Humedad={humedad:.2f}% | {info_ldr} | {info_rain}')
     enviar = requests.get(f'https://api.thingspeak.com/update?api_key=VEX7N395HLX3Z5RE&field1={temperatura:.2f}&field2={humedad:.2f}&field3={uv_raw}&field4={rpm_prom:.2f}&field5={ldr}&field6={rain}')
-    ##print(df)
+    
+    print(data_all)
     time.sleep(120)
