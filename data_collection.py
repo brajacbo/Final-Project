@@ -51,7 +51,7 @@ while True:
     rps_prom = 0
     rpm_prom = 0
     anterior_input = False
-    timeWind = 50
+    timeWind = 60
     timeOld = time.monotonic()
     timeStart = timeOld
     pulsos_vuelta = 1    ## Depende de la cantidad de imanes
@@ -178,4 +178,4 @@ while True:
     print(f'Indice UV={uv_raw}, Nivel UV ={risk_level} | Velocidad de viento= {rpm_prom:.2f} | Temperatura={temperatura:.2f}°C | Humedad={humedad:.2f}% | {info_ldr} | {info_rain}')
     enviar = requests.get(f'https://api.thingspeak.com/update?api_key=VEX7N395HLX3Z5RE&field1={temperatura:.2f}&field2={humedad:.2f}&field3={uv_raw}&field4={rpm_prom:.2f}&field5={ldr}&field6={rain}')
     ##print(df)
-    time.sleep(130)
+    time.sleep(120)
